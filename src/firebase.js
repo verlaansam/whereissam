@@ -4,23 +4,21 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, limit, orderBy, query, updateDoc, deleteDoc, doc } from "firebase/firestore";
 
 
-console.log(import.meta.env.VITE_FIREBASE_API_KEY);
-
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
 
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  apiKey: "AIzaSyCSQXpSjs_VME-MHjT8FPg-BxM4t0-GDPg",
 
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  authDomain: "whereissam-eda0a.firebaseapp.com",
 
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  projectId: "whereissam-eda0a",
 
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  storageBucket: "whereissam-eda0a.firebasestorage.app",
 
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  messagingSenderId: "1099249851964",
 
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  appId: "1:1099249851964:web:168f5c6c60fa0a48242d39"
 
 
 };

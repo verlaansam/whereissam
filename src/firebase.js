@@ -4,6 +4,8 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, limit, orderBy, query, updateDoc, deleteDoc, doc } from "firebase/firestore";
 
 
+console.log(import.meta.env.VITE_FIREBASE_API_KEY);
+
 // Your web app's Firebase configuration
 
 const firebaseConfig = {

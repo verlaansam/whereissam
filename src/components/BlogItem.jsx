@@ -25,6 +25,13 @@ function BlogItem({ post }) {
       {isOpen && (
       <div className="fixed inset-0 bg-black/60 flex justify-center items-center p-4 overflow-y-auto">
         <div className="bg-slate-950 p-6 rounded-lg max-w-lg w-full relative  max-h-[80vh] overflow-y-auto md:max-w-2xl"> 
+          {/* ✅ SEO Metadata for Blog Post */}
+          <head>
+              <title>{post.title} - My Logbook</title>
+              <meta name="description" content={post.notes?.substring(0, 150) || "Blog entry in my sailing logbook."} />
+              <meta property="og:title" content={post.title} />
+              <meta property="og:description" content={post.notes?.substring(0, 150) || "Read more about this sailing log entry."} />
+            </head>
           {/* Close button */}
           <button
             className="absolute top-4 right-4 text-gray-400 hover:text-gray-200"

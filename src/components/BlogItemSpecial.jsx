@@ -56,22 +56,25 @@ function BlogItemSpecial({ post }) {
       )}
 
       {isEditing ? (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2  items-center">
           <input
             type="text"
             name="title"
             value={updatedData.title}
             onChange={handleChange}
-            className="p-1 border rounded"
+            className="p-1 border rounded w-7/8"
           />
           <textarea
             name="notes"
             value={updatedData.notes}
             onChange={handleChange}
-            className="p-1 border rounded h-96"
+            className="p-1 border rounded h-96 w-7/8"
           />
-          <button onClick={handleUpdate} className="text-green-500">Save</button>
-          <button onClick={() => setIsEditing(false)} className="text-red-500">Cancel</button>
+          <div className="flex gap-2 flex-col md:flex-row">
+            <button onClick={handleUpdate} className="text-green-500 bg-green-100 rounded-lg w-36 hover:bg-green-300">Save</button>
+            <button onClick={() => setIsEditing(false)} className="text-red-500 bg-red-100 rounded-lg w-36 hover:bg-red-300">Cancel</button>
+          </div>
+          
         </div>
       ) : (
         <div className="flex justify-between items-center">

@@ -27,6 +27,8 @@ const LogForm = () => {
 
   const windDirections = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
 
+  const seaState = ["plat", "rustig", "stromend", "normaal", "golvend", "schuimend", "verward", "wild"];
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -58,7 +60,7 @@ const LogForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 w-screen shadow-md rounded-lg">
+    <div className="max-w-lg mx-auto p-6 w-screen shadow-md rounded-lg lg:max-w-screen">
       <h2 className="text-xl font-bold mb-4">Log Entry Form</h2>
 
       {/* ✅ Success Message */}
@@ -68,51 +70,65 @@ const LogForm = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Title</label>
-          <input type="text" name="title" value={formData.title} onChange={handleChange} required className="w-full p-2 border rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Date</label>
-          <input type="date" name="date" value={formData.date} onChange={handleChange} required className="w-full p-2 border rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Wind</label>
-          <div className="flex space-x-2">
-            <select name="windSpeed" value={formData.windSpeed} onChange={handleChange} className="w-1/2 p-2 border rounded">
-              <option value="">Speed (knots)</option>
-              {windSpeeds.map((speed, index) => (
-                <option key={index} value={speed}>
-                  {speed}
-                </option>
-              ))}
-            </select>
-            <select name="windDirection" value={formData.windDirection} onChange={handleChange} className="w-1/2 p-2 border rounded">
-              <option value="">Direction</option>
-              {windDirections.map((dir, index) => (
-                <option key={index} value={dir}>
-                  {dir}
-                </option>
-              ))}
-            </select>
+      <form onSubmit={handleSubmit} className="space-y-4 flex flex-col justify-center items-center">
+        <div className=" w-full flex flex-col xl:flex-row xl:space-x-4">
+          <div className="xl:w-1/2">
+            <div className="xl:justify-between">
+              <label className="block text-sm font-medium">Title</label>
+              <input type="text" name="title" value={formData.title} onChange={handleChange} required className="w-full p-2 border rounded" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Date</label>
+              <input type="date" name="date" value={formData.date} onChange={handleChange} required className="w-full p-2 border rounded" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Wind</label>
+              <div className="flex space-x-2">
+                <select name="windSpeed" value={formData.windSpeed} onChange={handleChange} className="w-1/2 p-2 border rounded">
+                  <option value="">Speed (knots)</option>
+                  {windSpeeds.map((speed, index) => (
+                    <option key={index} value={speed}>
+                      {speed}
+                    </option>
+                  ))}
+                </select>
+                <select name="windDirection" value={formData.windDirection} onChange={handleChange} className="w-1/2 p-2 border rounded">
+                  <option value="">Direction</option>
+                  {windDirections.map((dir, index) => (
+                    <option key={index} value={dir}>
+                      {dir}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium">Sea state</label>
+                <div className="flex space-x-2">
+                  <select name="seaState" value={formData.seaState} onChange={handleChange} className="w-full p-2 border rounded">
+                    <option value="">Sea State</option>
+                    {seaState.map((speed, index) => (
+                      <option key={index} value={speed}>
+                        {speed}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+            </div>
+          </div>
+          <div className="xl:w-1/2 ">
+            <label className="block text-sm font-medium ">Notes (Markdown Supported)</label>
+            <textarea
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              className="w-full p-2 border rounded h-24 md:h-72 lg:h-96 xl:w-full"
+              placeholder="Write in Markdown (**bold**, *italic*, # h1)..."
+            ></textarea>
           </div>
         </div>
-        <div>
-          <label className="block text-sm font-medium">Sea State</label>
-          <input type="text" name="seaState" value={formData.seaState} onChange={handleChange} className="w-full p-2 border rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Notes (Markdown Supported)</label>
-          <textarea
-            name="notes"
-            value={formData.notes}
-            onChange={handleChange}
-            className="w-full p-2 border rounded h-24"
-            placeholder="Write in Markdown (*bold*, _italic_, `code`)..."
-          ></textarea>
-        </div>
-        <button type="submit" className="text-sm text-black font-roboto-slab border p-2 w-full bg-white hover:text-white hover:bg-slate-950 mt-4">
+        <button type="submit" className="text-sm text-black font-roboto-slab border p-2 w-full bg-white hover:text-white hover:bg-slate-950 mt-4 xl:w-36">
           Submit Log Entry
         </button>
       </form>

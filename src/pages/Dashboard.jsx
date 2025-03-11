@@ -46,7 +46,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="w-screen h-full flex flex-col items-center justify-start bg-slate-950 text-gray-200">
+    <div className="w-screen h-full flex flex-col items-center justify-start bg-slate-950 text-gray-200 pt-5">
       <Header title="Dashboard" />
       <h1 className="text-xl font-roboto-slab p-2">Welcome, {user.email}!</h1>
       <Form />

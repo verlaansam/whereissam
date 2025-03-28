@@ -1,30 +1,54 @@
 import { useState } from "react";
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil, X } from "lucide-react";
 import { db, doc, deleteDoc, updateDoc } from "../firebase";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
 function BlogItemSpecial({ post }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [updatedData, setUpdatedData] = useState({ ...post });
+  const [updatedData, setUpdatedData] = useState({
+    ...post,
+    tags: Array.isArray(post.tags) ? post.tags : [], // Zorg dat tags altijd een array is
+  });
+  const [tagInput, setTagInput] = useState(""); // Nieuwe tag invoer
   const [successMessage, setSuccessMessage] = useState("");
   const [failedMessage, setFailedMessage] = useState("");
-
-  // Handle input change
-  const handleChange = (e) => {
-    setUpdatedData({ ...updatedData, [e.target.name]: e.target.value });
-  };
 
   // Handle Quill input change
   const handleQuillChange = (value) => {
     setUpdatedData({ ...updatedData, notes: value });
   };
 
+  // Tags verwerken bij spatiebalk
+  const handleTagKeyDown = (e) => {
+    if (e.key === " " && tagInput.trim()) {
+      e.preventDefault(); // Voorkomt dat spatie wordt toegevoegd
+      setUpdatedData({ ...updatedData, tags: [...updatedData.tags, tagInput.trim()] });
+      setTagInput("");
+    }
+  };
+
+  // Tag verwijderen
+  const removeTag = (index) => {
+    setUpdatedData({
+      ...updatedData,
+      tags: updatedData.tags.filter((_, i) => i !== index),
+    });
+  };
+
+  // Handle form input change
+  const handleChange = (e) => {
+    setUpdatedData({ ...updatedData, [e.target.name]: e.target.value });
+  };
+
   // Update Firestore
   const handleUpdate = async () => {
     try {
       const postRef = doc(db, "logEntries", post.id);
-      await updateDoc(postRef, updatedData);
+      await updateDoc(postRef, {
+        ...updatedData,
+        tags: updatedData.tags, // Opslaan als array
+      });
       setIsEditing(false);
       setSuccessMessage("Blog updated successfully!");
     } catch (error) {
@@ -53,9 +77,33 @@ function BlogItemSpecial({ post }) {
 
       {isEditing ? (
         <div className="flex flex-col gap-2 items-center">
-          <input type="text" name="title" value={updatedData.title} onChange={handleChange} className="p-1  rounded w-7/8" />
-          
-          {/* 🔹 Quill Editor in plaats van textarea */}
+          <label className="block text-sm font-medium text-gray-200">Titel</label>
+          <input type="text" name="title" value={updatedData.title} onChange={handleChange} className="p-1 rounded  border border-white w-7/8" />
+
+          {/* 🔹 Tags invoer */}
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-200">Tags</label>
+            <div className="flex flex-wrap gap-2 p-2 border rounded w-full bg-gray-800">
+              {updatedData.tags.map((tag, index) => (
+                <span key={index} className="flex items-center bg-orange-500 text-gray-200 px-2 py-1 text-sm rounded">
+                  {tag}
+                  <button onClick={() => removeTag(index)} className="ml-1 text-red-600 hover:text-red-800">
+                    <X size={14} />
+                  </button>
+                </span>
+              ))}
+              <input
+                type="text"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleTagKeyDown}
+                className="bg-transparent outline-none p-1 text-gray-200"
+                placeholder="Type en druk op spatie..."
+              />
+            </div>
+          </div>
+
+          {/* 🔹 Quill Editor */}
           <ReactQuill value={updatedData.notes} onChange={handleQuillChange} className="w-full bg-slate-950 h-80 mb-24 text-white" />
 
           <div className="flex gap-2 flex-col md:flex-row">
@@ -69,9 +117,21 @@ function BlogItemSpecial({ post }) {
             <h3 className="text-lg font-roboto-slab text-gray-200">{post.title}</h3>
             <p className="text-sm text-gray-600">{post.date?.toDate().toLocaleDateString("nl-NL")}</p>
             
-            {/* 🔹 Quill slaat op als HTML, dus render het correct */}
-            <div className="mt-2 text-gray-200" dangerouslySetInnerHTML={{ __html: post.notes || "<em>Geen notities beschikbaar</em>" }} />
+            {/* 🔹 Tags weergeven als blokjes */}
+            <div className="flex flex-wrap gap-2 mt-2">
+              {post.tags && post.tags.length > 0 ? (
+                post.tags.map((tag, index) => (
+                  <span key={index} className="bg-gray-200 text-gray-800 px-2 py-1 text-sm rounded">
+                    {tag}
+                  </span>
+                ))
+              ) : (
+                <p className="text-sm text-gray-600">Geen tags</p>
+              )}
+            </div>
 
+            {/* 🔹 Render Quill content als HTML */}
+            <div className="mt-2 text-gray-200" dangerouslySetInnerHTML={{ __html: post.notes || "<em>Geen notities beschikbaar</em>" }} />
           </div>
           <div className="flex gap-2 z-50">
             <button onClick={() => setIsEditing(true)} className="text-blue-500"><Pencil /></button>
@@ -84,4 +144,7 @@ function BlogItemSpecial({ post }) {
 }
 
 export default BlogItemSpecial;
+
+
+
 

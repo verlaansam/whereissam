@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://whereis.samverlaan.nl/sitemap.xml

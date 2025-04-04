@@ -1,29 +1,34 @@
 import { useState, useEffect } from "react";
-import { db, collection, query, orderBy, limit } from "../firebase";
-import { onSnapshot } from "firebase/firestore"; // ✅ Import real-time listener
+import { db, collection, query, orderBy, limit, getDocs } from "../firebase";
 import BlogItem from "./BlogItem";
 import { Link } from "react-router-dom";
 
 function Blog() {
   const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true); // Optional: show loading
 
   useEffect(() => {
-    const blogQuery = query(
-      collection(db, "logEntries"),
-      orderBy("date", "desc"), // Sort by newest first
-      limit(3) // Limit to the latest 3 posts
-    );
+    const fetchBlogs = async () => {
+      try {
+        const blogQuery = query(
+          collection(db, "logEntries"),
+          orderBy("date", "desc"),
+          limit(3)
+        );
+        const querySnapshot = await getDocs(blogQuery);
+        const posts = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setBlogPosts(posts);
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // ✅ Real-time listener for blog posts
-    const unsubscribe = onSnapshot(blogQuery, (querySnapshot) => {
-      const posts = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setBlogPosts(posts);
-    });
-
-    return () => unsubscribe(); // ✅ Cleanup listener on unmount
+    fetchBlogs();
   }, []);
 
   return (
@@ -33,24 +38,32 @@ function Blog() {
         Op spelfouten voorbehouden
       </h3>
 
-      {/* Display Blog Items */}
       <ul className="p-2 w-screen flex flex-col items-center md:w-3/4">
-        {blogPosts.length > 0 ? (
-          blogPosts.map((post) => <li><BlogItem key={post.id} post={post} /></li>)
+        {loading ? (
+          <p className="text-gray-500">Loading blogposts...</p>
+        ) : blogPosts.length > 0 ? (
+          blogPosts.map((post) => (
+            <li key={post.id}>
+              <BlogItem post={post} />
+            </li>
+          ))
         ) : (
           <p className="text-gray-500">Geen blogposts beschikbaar.</p>
         )}
       </ul>
 
-      <button aria-label="Meer Blogs" className="text-sm text-white font-roboto-slab border p-2 ml-4 w-3/4 hover:bg-white hover:text-black">
-          <Link to="/Blog" className="block p-3 md:p-0 hover:underline" onClick={() => setIsOpen(false)}>
-              Meer uit het logboek
-          </Link>
+      <button
+        aria-label="Meer Blogs"
+        className="text-sm text-white font-roboto-slab border p-2 ml-4 w-3/4 hover:bg-white hover:text-black"
+      >
+        <Link to="/Blog" className="block p-3 md:p-0 hover:underline">
+          Meer uit het logboek
+        </Link>
       </button>
-
     </div>
   );
 }
 
 export default Blog;
+
 

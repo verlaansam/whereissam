@@ -15,6 +15,7 @@ const Navbar = () => {
 
         {/* Hamburger Button (Mobile) */}
         <button
+          aria-label="Toggle menu"
           className="block md:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -28,17 +29,17 @@ const Navbar = () => {
           }`}
         >
           <li>
-            <Link to="/" className="block p-3 md:p-0 hover:underline" onClick={() => setIsOpen(false)}>
+            <Link aria-label="home" to="/" className="block p-3 md:p-0 hover:underline" onClick={() => setIsOpen(false)}>
               Home
             </Link>
           </li>
           <li>
-            <Link to="/Blog" className="block p-3 md:p-0 hover:underline" onClick={() => setIsOpen(false)}>
+            <Link aria-label="blog" to="/Blog" className="block p-3 md:p-0 hover:underline" onClick={() => setIsOpen(false)}>
               Blog
             </Link>
           </li>
           <li>
-            <Link to="/Login" className="block p-3 md:p-0 hover:underline" onClick={() => setIsOpen(false)}>
+            <Link aria-label="login" to="/Login" className="block p-3 md:p-0 hover:underline" onClick={() => setIsOpen(false)}>
               Login
             </Link>
           </li>

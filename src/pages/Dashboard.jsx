@@ -53,13 +53,14 @@ const Dashboard = () => {
 
       <ul className="p-2 w-screen">
         {blogPosts.length > 0 ? (
-          blogPosts.map((post) => <BlogItemSpecial key={post.id} post={post} />)
+          blogPosts.map((post) => <li><BlogItemSpecial key={post.id} post={post} /></li>)
         ) : (
           <p className="text-gray-500 text-center mt-4">Geen blogposts beschikbaar.</p>
         )}
       </ul>
 
       <button
+        aria-label="Logout"
         className="text-sm text-white font-roboto-slab border p-2 ml-4 w-3/4 hover:bg-white hover:text-black m-4"
         onClick={logout}
       >

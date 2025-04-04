@@ -12,7 +12,8 @@ function BlogItem({ post }) {
   return (
     <>
       <section
-        className="border-b border-gray-700 p-4 cursor-pointer hover:bg-gray-800 transition duration-200 w-11/12"
+        aria-label="Click for Full blog post"
+        className="border-b border-gray-700 p-4 cursor-pointer hover:bg-gray-800 transition duration-200 w-screen"
         onClick={() => setIsOpen(true)}
       >
         <h3 className="text-lg font-roboto-slab text-gray-200">{post.title}</h3>
@@ -23,7 +24,7 @@ function BlogItem({ post }) {
         <div className="flex flex-wrap gap-2 mt-2">
           {tags.length > 0 ? (
             tags.map((tag, index) => (
-              <span key={index} className="bg-orange-500 text-gray-200 px-2 py-1 text-sm rounded">
+              <span key={index} className="bg-orange-500 text-gray-900 px-2 py-1 text-sm rounded">
                 {tag.trim()}
               </span>
             ))
@@ -46,6 +47,7 @@ function BlogItem({ post }) {
             
             {/* Close button */}
             <button
+              aria-label="Close"
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-200"
               onClick={() => setIsOpen(false)}
             >

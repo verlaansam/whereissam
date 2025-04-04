@@ -29,7 +29,7 @@ const Login = () => {
         <input className="border border-gray-200 w-full p-1" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <p className="self-baseline mt-2">Password</p>
         <input className="border border-gray-200 w-full p-1 " type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit" className="text-sm text-white font-roboto-slab border p-2 ml-4 w-3/4 hover:bg-white hover:text-black mt-4">Login</button>
+        <button aria-label="login" type="submit" className="text-sm text-white font-roboto-slab border p-2 ml-4 w-3/4 hover:bg-white hover:text-black mt-4">Login</button>
       </form>
     </div>
   );

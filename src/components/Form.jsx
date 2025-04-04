@@ -116,7 +116,7 @@ const LogForm = () => {
             <label className="block text-sm font-medium">Tags</label>
             <div className="border rounded p-2 flex flex-wrap gap-2 min-h-[40px]">
               {tags.map((tag, index) => (
-                <span key={index} className="bg-orange-500 text-gray-200 px-2 py-1 rounded-2xl flex items-center">
+                <span key={index} className="bg-orange-500 text-gray-900 px-2 py-1 rounded-2xl flex items-center">
                   {tag}
                   <button type="button" onClick={() => removeTag(index)} className="ml-2 text-red-500">&times;</button>
                 </span>
@@ -138,7 +138,7 @@ const LogForm = () => {
           </div>
         </div>
 
-        <button type="submit" className="text-sm text-black font-roboto-slab border p-2 w-full bg-white hover:text-white hover:bg-slate-950 mt-4 xl:w-36">
+        <button aria-label="submit" type="submit" className="text-sm text-black font-roboto-slab border p-2 w-full bg-white hover:text-white hover:bg-slate-950 mt-4 xl:w-36">
           Submit Log Entry
         </button>
       </form>

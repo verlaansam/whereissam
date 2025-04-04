@@ -107,8 +107,8 @@ function BlogItemSpecial({ post }) {
           <ReactQuill value={updatedData.notes} onChange={handleQuillChange} className="w-full bg-slate-950 h-80 mb-24 text-white" />
 
           <div className="flex gap-2 flex-col md:flex-row">
-            <button onClick={handleUpdate} className="text-green-500 bg-green-100 rounded-lg w-36 hover:bg-green-300">Save</button>
-            <button onClick={() => setIsEditing(false)} className="text-red-500 bg-red-100 rounded-lg w-36 hover:bg-red-300">Cancel</button>
+            <button aria-label="Save blogitem" onClick={handleUpdate} className="text-green-500 bg-green-100 rounded-lg w-36 hover:bg-green-300">Save</button>
+            <button aria-label="Cancel" onClick={() => setIsEditing(false)} className="text-red-500 bg-red-100 rounded-lg w-36 hover:bg-red-300">Cancel</button>
           </div>
         </div>
       ) : (
@@ -121,7 +121,7 @@ function BlogItemSpecial({ post }) {
             <div className="flex flex-wrap gap-2 mt-2">
               {post.tags && post.tags.length > 0 ? (
                 post.tags.map((tag, index) => (
-                  <span key={index} className="bg-gray-200 text-gray-800 px-2 py-1 text-sm rounded">
+                  <span key={index} className="bg-orange-500 text-gray-900 px-2 py-1 text-sm rounded">
                     {tag}
                   </span>
                 ))
@@ -134,8 +134,8 @@ function BlogItemSpecial({ post }) {
             <div className="mt-2 text-gray-200" dangerouslySetInnerHTML={{ __html: post.notes || "<em>Geen notities beschikbaar</em>" }} />
           </div>
           <div className="flex gap-2 z-50">
-            <button onClick={() => setIsEditing(true)} className="text-blue-500"><Pencil /></button>
-            <button onClick={handleDelete} className="text-red-500"><Trash2 /></button>
+            <button aria-label="edit blogitem" onClick={() => setIsEditing(true)} className="text-blue-500"><Pencil /></button>
+            <button aria-label="remove blogitem" onClick={handleDelete} className="text-red-500"><Trash2 /></button>
           </div>
         </div>
       )}

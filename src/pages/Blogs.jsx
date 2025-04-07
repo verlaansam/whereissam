@@ -50,7 +50,7 @@ function Blogs() {
   
 
   return (
-    <div className="w-screen flex flex-col items-center border-b border-gray-700 p-5 bg-slate-950">
+    <div className="w-screen flex flex-col items-center border-b border-gray-700 p-5 bg-slate-950" key='1'>
       <Header title="Logboek" />
       <h2 className="text-2xl font-roboto-slab text-gray-200 pl-2 w-screen">Het Logboek</h2>
       <h4 className="text-sm text-gray-200 border-b border-gray-700 pl-2 w-screen">

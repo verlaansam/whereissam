@@ -2,6 +2,7 @@ import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import { db, collection, getDocs, query, orderBy, limit } from "../firebase";
 import BlogItem from "../components/BlogItem";
+import { Link } from "react-router-dom";
 
 function Blogs() {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -74,11 +75,16 @@ function Blogs() {
 
       {/* Blog Items weergeven */}
       <ul className="p-2 w-screen flex flex-col items-center">
-        {blogPosts.length > 0 ? (
-          sortPosts(blogPosts, sortOption).map((post) => <li><BlogItem key={post.id} post={post} /></li>)
+        {blogPosts.map((post) => (
+          <li key={post.id} className="w-full">
+            <Link to={`/blog/${post.id}`} aria-label={`Bekijk blogpost: ${post.title}`}>
+              <BlogItem post={post} />
+            </Link>
+          </li>
+        ))}
         ) : (
           <p className="text-gray-500">Geen blogposts beschikbaar.</p>
-        )}
+        )
       </ul>
     </div>
   );

@@ -43,8 +43,10 @@ function Blog() {
           <p className="text-gray-500">Loading blogposts...</p>
         ) : blogPosts.length > 0 ? (
           blogPosts.map((post) => (
-            <li key={post.id}>
-              <BlogItem post={post} />
+            <li key={post.id} className="w-full">
+              <Link to={`/blog/${post.id}`} aria-label={`Bekijk blogpost: ${post.title}`}>
+                <BlogItem post={post} />
+              </Link>
             </li>
           ))
         ) : (

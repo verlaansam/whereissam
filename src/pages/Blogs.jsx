@@ -77,7 +77,7 @@ function Blogs() {
       <ul className="p-2 w-screen flex flex-col items-center">
         {blogPosts.map((post) => (
           <li key={post.id} className="w-full">
-            <Link to={`/blog/${post.id}`} aria-label={`Bekijk blogpost: ${post.title}`}>
+            <Link to={`/blog/${post.slug}`} aria-label={`Bekijk blogpost: ${post.title}`}>
               <BlogItem post={post} />
             </Link>
           </li>

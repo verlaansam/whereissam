@@ -4,6 +4,15 @@ import { Timestamp } from "firebase/firestore";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css"; // ✅ Quill styles
 
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[\s\W-]+/g, "-") // Replace spaces and special characters
+    .replace(/^-+|-+$/g, "");  // Trim hyphens
+}
+
 const LogForm = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -45,23 +54,26 @@ const LogForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    const slug = slugify(formData.title); // ✅ Create slug here
+  
     try {
       await addDoc(collection(db, "logEntries"), {
         ...formData,
-        tags, // ✅ Tags opslaan als array
-        date: Timestamp.fromDate(new Date(formData.date)), // ✅ Firestore Timestamp
+        slug, // ✅ Save the slug
+        tags,
+        date: Timestamp.fromDate(new Date(formData.date)),
       });
-
+  
       setSuccessMessage("Log entry saved successfully!");
       setFormData({
         title: "",
-        date: new Date().toISOString().split("T")[0], 
+        date: new Date().toISOString().split("T")[0],
         windSpeed: "",
         windDirection: "",
         seaState: "",
         notes: "",
       });
-      setTags([]); // Reset tags
+      setTags([]);
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       console.error("Error saving log entry:", error);

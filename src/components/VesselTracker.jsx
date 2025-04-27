@@ -7,7 +7,7 @@ const VesselTracker = () => {
         title="Vessel Tracker"
         height="380px"
         id=""
-        className="border-2 rounded-lg border-black w-screen md:w-3/4"
+        className="border-2 rounded-lg border-black w-screen p-2 md:w-1/2"
         display="block"
         position="relative"/>
   );

@@ -1,5 +1,6 @@
 import VesselTracker from "./VesselTracker";
 import Weather from "./Weather";
+import TideForecast from "./TideForecast";
 
 
 const Ais = () => {

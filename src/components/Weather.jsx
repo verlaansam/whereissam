@@ -1,75 +1,113 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const WeatherTides = () => {
-  const [weather, setWeather] = useState(null);
-  const [alerts, setAlerts] = useState([]);
-  const [loading, setLoading] = useState(true);
+const locaties = {
+  "West-Terschelling": { lat: 53.366, long: 5.2167 },
+  "Oost-Vlieland": { lat: 53.2931, long: 5.0724 },
+  "Texel oudeschild": { lat: 53.0406, long: 4.8523 },
+  Harlingen: { lat: 53.1745, long: 5.4224 },
+  "Ameland nes": { lat: 53.4490, long: 5.7651 },
+  Kornwerderzand: { lat: 53.0706, long: 5.3366 },
+};
 
-  const dateToday = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
+function Weather() {
+  const [plaats, setPlaats] = useState("West-Terschelling");
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+
+  const { lat, long } = locaties[plaats];
+  const url = `https://data.meteoserver.nl/api/zeeweer.php?lat=${lat}&long=${long}&key=c9c74829f1`;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Haal het weer op
-        const weatherRes = await fetch(`https://api.weatherapi.com/v1/current.json?key=2b1271583cca4496a17111647252704&q=Terschelling&lang=nl`);
-        const weatherData = await weatherRes.json();
-        
-        // Haal weerwaarschuwingen op
-        const alertRes = await fetch(`https://api.weatherapi.com/v1/alerts.json?key=2b1271583cca4496a17111647252704&q=Terschelling&lang=nl`);
-        const alertData = await alertRes.json();
-
-        // Zet de opgehaalde data in de state
-        setWeather(weatherData.current);
-        setAlerts(alertData.alerts || []);  // Alerts kan een lege array zijn als er geen waarschuwingen zijn
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+        const res = await fetch(url);
+        const text = await res.text();
+        const json = JSON.parse(text);
+        setData(json);
+      } catch (err) {
+        setError("Fout bij ophalen data: " + err.message);
       }
     };
 
     fetchData();
-  }, [dateToday]);
+  }, [url]);
 
-  if (loading) return <p className="text-white p-4">Laden...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!data) return <p className="text-white">Laden...</p>;
 
-  if (!weather) return <p className="text-white p-4">Er is een fout opgetreden bij het ophalen van de gegevens.</p>;
+  const weer = data.liveweer?.[0];
+  const getij = data.getij || [];
+  const windKmh = parseFloat(weer.windkmh);
+  const windKnopen = (windKmh / 1.852).toFixed(1);
 
   return (
-    <div className="grid-cols-1 md:grid-cols-1 gap-6 p-6 bg-slate-950 text-white rounded-lg shadow-lg">
-      {/* Weerbericht */}
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Weerbericht (Terschelling)</h2>
-        <div className="border-b border-gray-700 pb-4 mb-4">
-          <p>🌡️ {weather.temp_c}°C Heden</p>
-          <p>🌬️ {weather.wind_kph} km/u Wind</p>
-          <p>🔄 Windrichting: {weather.wind_dir}</p>
-          <p>☁️ {weather.condition.text}</p>
-          <img src={`https:${weather.condition.icon}`} alt="Weather icon" />
+    <div className="flex flex-col gap-4 text-white p-4 bg-slate-900 rounded-lg shadow-lg">
+
+      {/* Data weergave */}
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Weergegevens */}
+        <div className="w-full md:w-1/2">
+          <div className="mb-2">
+            <label className="text-xl font-bold mb-2 border-b border-gray-700 pb-1">Weer op</label>
+            <select
+              className="bg-slate-800 text-white border border-gray-600 rounded px-2 py-1 text-xl font-bold pl-2"
+              value={plaats}
+              onChange={(e) => setPlaats(e.target.value)}
+            >
+              {Object.keys(locaties).map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
+          </div>
+          <table className="w-full table-auto border-collapse border border-gray-600 text-sm">
+            <tbody>
+              <tr><td className="border border-gray-600 px-2 py-1">Temperatuur</td><td className="border border-gray-600 px-2 py-1">{weer.temp} °C</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">Wind</td><td className="border border-gray-600 px-2 py-1">{weer.windr} @ {windKmh} km/u ({windKnopen} kn)</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">Luchtdruk</td><td className="border border-gray-600 px-2 py-1">{weer.luchtd} hPa</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">Zicht</td><td className="border border-gray-600 px-2 py-1">{weer.zicht} km</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">Verwachting</td><td className="border border-gray-600 px-2 py-1">{weer.verw}</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">Waarschuwing</td><td className="border border-gray-600 px-2 py-1">{weer.waarsch}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Getijden */}
+        <div className="w-full md:w-1/2">
+          <h2 className="text-xl font-bold mb-2 border-b border-gray-700 pb-1">Getijden</h2>
+          {getij.length > 0 ? (
+            <table className="w-full table-auto border-collapse border border-gray-600 text-sm">
+              <thead>
+                <tr>
+                  <th className="border border-gray-600 px-2 py-1">Datum</th>
+                  <th className="border border-gray-600 px-2 py-1">Tijd</th>
+                  <th className="border border-gray-600 px-2 py-1">Type</th>
+                  <th className="border border-gray-600 px-2 py-1">Hoogte</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getij.map((tide, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-slate-700" : "bg-slate-800"}>
+                    <td className="border border-gray-600 px-2 py-1">{formatDate(tide.datum)}</td>
+                    <td className="border border-gray-600 px-2 py-1">{tide.uur}</td>
+                    <td className="border border-gray-600 px-2 py-1">{tide.getij}</td>
+                    <td className="border border-gray-600 px-2 py-1">{tide.verschil} cm</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-gray-400">Geen getijdedata beschikbaar</p>
+          )}
         </div>
       </div>
-
-      {/* Weeralarmen */}
-      {alerts.length > 0 ? (
-        <div className="border-t border-gray-700 pt-4">
-          <h3 className="text-xl font-bold mb-4">Weeralarmen</h3>
-          {alerts.map((alert, index) => (
-            <div key={index} className="mb-4 p-4 bg-red-600 rounded-lg">
-              <h4 className="text-lg font-semibold">{alert.event}</h4>
-              <p>{alert.headline}</p>
-              <p><strong>Details:</strong> {alert.description}</p>
-              <p><strong>Geldig van:</strong> {alert.valid_from}</p>
-              <p><strong>Tot:</strong> {alert.valid_to}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="">
-          <p className="text-green-400 p-4">Er zijn momenteel geen weerswaarschuwingen van kracht.</p>
-        </div>
-      )}
     </div>
   );
-};
+}
 
-export default WeatherTides;
+function formatDate(str) {
+  return `${str.slice(0, 2)}-${str.slice(2, 4)}-${str.slice(4)}`;
+}
+
+export default Weather;

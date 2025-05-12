@@ -10,10 +10,13 @@ import Navbar from "./components/Navbar";
 import Blogs from "./pages/Blogs";
 import Footer from "./components/Footer";
 import BlogDetail from "./pages/BlogDetail";
+import CookieBanner from "./components/CookieBanner";
 
 const App = () => {
   return (
-    <AuthProvider>
+    <>
+      <CookieBanner />
+      <AuthProvider>
       <Router>
         <Navbar/>
         <Routes>
@@ -28,6 +31,8 @@ const App = () => {
         <Footer/>
       </Router>
     </AuthProvider>
+    </>
+    
   );
 };
 

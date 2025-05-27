@@ -1,10 +1,13 @@
-import Header from "../components/Header";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { db, collection, getDocs, query, orderBy, limit } from "../firebase";
+import { useTranslation } from "react-i18next";
+import Header from "../components/Header";
 import BlogItem from "../components/BlogItem";
-import { Link } from "react-router-dom";
+
 
 function Blogs() {
+  const { t } = useTranslation();
   const [blogPosts, setBlogPosts] = useState([]);
   const [sortOption, setSortOption] = useState("date-desc"); // Default: nieuwste eerst
 
@@ -53,7 +56,7 @@ function Blogs() {
   return (
     <div className="w-screen flex flex-col items-center border-b border-gray-700 p-5 bg-slate-950" key='1'>
       <Header title="Logboek" />
-      <h2 className="text-2xl font-roboto-slab text-gray-200 pl-2 w-screen">Het Logboek</h2>
+      <h2 className="text-2xl font-roboto-slab text-gray-200 pl-2 w-screen">{t("BlogHeader")}</h2>
       <h4 className="text-sm text-gray-200 border-b border-gray-700 pl-2 w-screen">
         Op spelfouten voorbehouden
       </h4>

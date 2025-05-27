@@ -1,7 +1,5 @@
 import VesselTracker from "./VesselTracker";
 import Weather from "./Weather";
-import Windguru from "./WindGuru";
-
 
 const Ais = () => {
   

@@ -1,3 +1,4 @@
+//to edit a blog item with tags and rich text editor is backend
 import { useState } from "react";
 import { Trash2, Pencil, X } from "lucide-react";
 import { db, doc, deleteDoc, updateDoc } from "../firebase";

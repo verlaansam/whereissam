@@ -1,3 +1,4 @@
+//to make a form for the logbook with the following fields dus backend
 import { useState } from "react";
 import { db, collection, addDoc } from "../firebase";
 import { Timestamp } from "firebase/firestore";

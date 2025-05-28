@@ -58,7 +58,7 @@ function Blogs() {
       <Header title="Logboek" />
       <h2 className="text-2xl font-roboto-slab text-gray-200 pl-2 w-screen">{t("BlogHeader")}</h2>
       <h4 className="text-sm text-gray-200 border-b border-gray-700 pl-2 w-screen">
-        Op spelfouten voorbehouden
+        {t("BlogSubHeader")}
       </h4>
 
       {/* Sorteer dropdown */}
@@ -69,10 +69,10 @@ function Blogs() {
           onChange={(e) => setSortOption(e.target.value)}
           className="text-sm text-white font-roboto-slab border p-2 hover:bg-white hover:text-black"
         >
-          <option aria-label="date new-old" value="date-desc">Datum (Nieuw → Oud)</option>
-          <option aria-label="date old-new" value="date-asc">Datum (Oud → Nieuw)</option>
-          <option aria-label="title a-z" value="title-asc">Titel (A-Z)</option>
-          <option aria-label="tags a-z" value="tags-asc">Tags (A-Z)</option>
+          <option aria-label="date new-old" value="date-desc">{t("BlogSortNewOld")}</option>
+          <option aria-label="date old-new" value="date-asc">{t("BlogSortOldNew")}</option>
+          <option aria-label="title a-z" value="title-asc">{t("BlogSortTitleAZ")}</option>
+          <option aria-label="tags a-z" value="tags-asc">{t("BlogSortTagsAZ")}</option>
         </select>
       </div>
 
@@ -86,7 +86,7 @@ function Blogs() {
           </li>
         ))}
         ) : (
-          <p className="text-gray-500">Geen blogposts beschikbaar.</p>
+          <p className="text-gray-500">{t("BlogNoPost")}</p>
         )
       </ul>
     </div>

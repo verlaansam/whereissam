@@ -1,5 +1,5 @@
-
 import DOMPurify from "dompurify";
+import { useTranslation } from "react-i18next";
 
 function getFirstSentence(html) {
   // Strip HTML tags first
@@ -15,14 +15,15 @@ function getFirstSentence(html) {
 
 
 function BlogItem({ post }) {
+  const { t } = useTranslation();
   const formattedDate = post.date?.toDate().toLocaleDateString("nl-NL");
   const tags = Array.isArray(post.tags) ? post.tags : post.tags?.split(",") || [];
 
   return (
     <section className="border-b border-gray-700 p-4 hover:bg-gray-800 transition duration-200 w-screen">
       <h3 className="text-lg font-roboto-slab text-gray-200">{post.title}</h3>
-      <p className="text-gray-200">Woei van {post.windSpeed} knoopjes uit {post.windDirection}</p>
-      <p className="text-sm text-gray-600">Geplaatst op {formattedDate}</p>
+      <p className="text-gray-200">{t("BlogPostWindSpeed")}{post.windSpeed}{t("BlogPostWindDirection")}{post.windDirection}</p>
+      <p className="text-sm text-gray-600">{t("BlogPostDate")} {formattedDate}</p>
 
       <div className="flex flex-wrap gap-2 mt-2">
         {tags.length > 0 ? (
@@ -32,7 +33,7 @@ function BlogItem({ post }) {
             </span>
           ))
         ) : (
-          <p className="text-sm text-gray-600">Geen tags</p>
+          <p className="text-sm text-gray-600">{t("BlogNoTags")}</p>
         )}
       </div>
 
@@ -44,7 +45,7 @@ function BlogItem({ post }) {
           ),
         }}
       />
-      <span className="text-blue-400 hover:underline ml-1">Lees meer →</span>
+      <span className="text-blue-400 hover:underline ml-1">{t("BlogPostReadMore")}→</span>
     </section>
   );
 }

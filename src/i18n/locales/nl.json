@@ -9,7 +9,7 @@
   
 
     "BlogHeader": "Het Logboek",
-    "BlogHeaderDescription": "Op Spelfouten voorbehouden",
+    "BlogSubHeader": "Op Spelfouten voorbehouden",
     "BlogLoading": "Laden van het Logboek...",
     "BlogMorePosts": "Meer berichten uit het Logboek",
     "BlogNoPosts": "Er zijn momenteel geen blogberichten beschikbaar.",
@@ -17,8 +17,8 @@
     "BlogPostDate": "Geplaatst op",
     "BlogPostError": "Er is een fout opgetreden bij het laden van het blogbericht. Probeer het later opnieuw.",
     "BlogPostReadMore": "Lees meer",
-    "BlogPostWindDirection": "knoopjes uit",
-    "BlogPostWindSpeed": "Woei van",
+    "BlogPostWindDirection": " knoopjes uit",
+    "BlogPostWindSpeed": "Woei van ",
     "BlogSortDateNewOld": "Datum (Nieuw naar Oud)",
     "BlogSortDateOldNew": "Datum (Oud naar Nieuw)",
     "BlogSortTagsAZ": "Tags (A-Z)",

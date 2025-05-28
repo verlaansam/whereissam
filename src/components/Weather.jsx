@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const locaties = {
-  "West-Terschelling": { lat: 53.366, long: 5.2167 },
-  "Oost-Vlieland": { lat: 53.2931, long: 5.0724 },
-  "Texel oudeschild": { lat: 53.0406, long: 4.8523 },
-  Harlingen: { lat: 53.1745, long: 5.4224 },
-  "Ameland nes": { lat: 53.4490, long: 5.7651 },
-  Kornwerderzand: { lat: 53.0706, long: 5.3366 },
-};
+
 
 function Weather() {
+  const { t } = useTranslation();
   const [plaats, setPlaats] = useState("West-Terschelling");
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+
+  const locaties = {
+    "West-Terschelling": { lat: 53.366, long: 5.2167 },
+    "Oost-Vlieland": { lat: 53.2931, long: 5.0724 },
+    "Texel oudeschild": { lat: 53.0406, long: 4.8523 },
+    "Harlingen": { lat: 53.1745, long: 5.4224 },
+    "Ameland nes": { lat: 53.4490, long: 5.7651 },
+    "Kornwerderzand": { lat: 53.0706, long: 5.3366 },
+  };
 
   const { lat, long } = locaties[plaats];
   const url = `https://data.meteoserver.nl/api/zeeweer.php?lat=${lat}&long=${long}&key=c9c74829f1`;
@@ -33,7 +37,7 @@ function Weather() {
   }, [url]);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!data) return <p className="text-white">Laden...</p>;
+  if (!data) return <p className="text-white">{t("Loading")}</p>;
 
   const weer = data.liveweer?.[0];
   const getij = data.getij || [];
@@ -48,7 +52,7 @@ function Weather() {
         {/* Weergegevens */}
         <div className="w-full md:w-1/2">
           <div className="mb-2">
-            <label className="text-xl font-bold mb-2 border-b border-gray-700 pb-1">Weer op</label>
+            <label className="text-xl font-bold mb-2 border-b border-gray-700 pb-1">{t("WeatherOn")}</label>
             <select
               className="bg-slate-800 text-white border border-gray-600 rounded px-2 py-1 text-xl font-bold pl-2"
               value={plaats}
@@ -63,27 +67,27 @@ function Weather() {
           </div>
           <table className="w-full table-auto border-collapse border border-gray-600 text-sm">
             <tbody>
-              <tr><td className="border border-gray-600 px-2 py-1">Temperatuur</td><td className="border border-gray-600 px-2 py-1">{weer.temp} °C</td></tr>
-              <tr><td className="border border-gray-600 px-2 py-1">Wind</td><td className="border border-gray-600 px-2 py-1">{weer.windr} @ {windKmh} km/u ({windKnopen} kn)</td></tr>
-              <tr><td className="border border-gray-600 px-2 py-1">Luchtdruk</td><td className="border border-gray-600 px-2 py-1">{weer.luchtd} hPa</td></tr>
-              <tr><td className="border border-gray-600 px-2 py-1">Zicht</td><td className="border border-gray-600 px-2 py-1">{weer.zicht} km</td></tr>
-              <tr><td className="border border-gray-600 px-2 py-1">Verwachting</td><td className="border border-gray-600 px-2 py-1">{weer.verw}</td></tr>
-              <tr><td className="border border-gray-600 px-2 py-1">Waarschuwing</td><td className="border border-gray-600 px-2 py-1">{weer.waarsch}</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("Temprature")}</td><td className="border border-gray-600 px-2 py-1">{weer.temp} °C</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("Wind")}</td><td className="border border-gray-600 px-2 py-1">{weer.windr} @ {windKmh} km/u ({windKnopen} kn)</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("AirPressure")}</td><td className="border border-gray-600 px-2 py-1">{weer.luchtd} hPa</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("Visablility")}</td><td className="border border-gray-600 px-2 py-1">{weer.zicht} km</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("Forecast")}</td><td className="border border-gray-600 px-2 py-1">{weer.verw}</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("Warning")}</td><td className="border border-gray-600 px-2 py-1">{weer.waarsch}</td></tr>
             </tbody>
           </table>
         </div>
 
         {/* Getijden */}
         <div className="w-full md:w-1/2">
-          <h2 className="text-xl font-bold mb-2 border-b border-gray-700 pb-1">Getijden</h2>
+          <h2 className="text-xl font-bold mb-2 border-b border-gray-700 pb-1">{t("Tides")}</h2>
           {getij.length > 0 ? (
             <table className="w-full table-auto border-collapse border border-gray-600 text-sm">
               <thead>
                 <tr>
-                  <th className="border border-gray-600 px-2 py-1">Datum</th>
-                  <th className="border border-gray-600 px-2 py-1">Tijd</th>
-                  <th className="border border-gray-600 px-2 py-1">Type</th>
-                  <th className="border border-gray-600 px-2 py-1">Hoogte</th>
+                  <th className="border border-gray-600 px-2 py-1">{t("Date")}</th>
+                  <th className="border border-gray-600 px-2 py-1">{t("Time")}</th>
+                  <th className="border border-gray-600 px-2 py-1">{t("Type")}</th>
+                  <th className="border border-gray-600 px-2 py-1">{t("Height")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -98,7 +102,7 @@ function Weather() {
               </tbody>
             </table>
           ) : (
-            <p className="text-gray-400">Geen getijdedata beschikbaar</p>
+            <p className="text-gray-400">{t("NoTides")}</p>
           )}
         </div>
       </div>

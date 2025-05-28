@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { db, collection, query, where, getDocs } from "../firebase";
 import DOMPurify from "dompurify";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 function BlogDetail() {
+  const { t } = useTranslation();
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function BlogDetail() {
     fetchPost();
   }, [slug]);
 
-  if (!post) return <p className="text-white p-4">Loading...</p>;
+  if (!post) return <p className="text-white p-4">{t("Loading")}</p>;
 
   const formattedDate = post.date?.toDate().toLocaleDateString("nl-NL");
   const tags = Array.isArray(post.tags) ? post.tags : post.tags?.split(",") || [];
@@ -42,15 +44,15 @@ function BlogDetail() {
         aria-label="Go back"
       >
         <ArrowLeft className="mr-2" />
-        Terug
+        {t("Back")}
       </button>
       <article>
         <header>
           <h1 className="text-3xl font-roboto-slab mb-2">{post.title}</h1>
-          <p className="text-gray-400 mb-2">Geplaatst op {formattedDate}</p>
+          <p className="text-gray-400 mb-2">{t("BlogPostDate")}{formattedDate}</p>
           <div className="flex gap-2 flex-col md:flex-row mb-4">
-            <p>Woei van {post.windSpeed} knoopjes uit {post.windDirection}</p>
-            <p>Zeetje is {post.seaState}</p>
+            <p>{t("BlogPostWindSpeed")} {post.windSpeed} {t("BlogPostWindDirection")}{post.windDirection}</p>
+            <p>{t("SeaState")} {post.seaState}</p>
           </div>
           <div className="flex flex-wrap gap-2 mb-4">
             {tags.map((tag, index) => (

@@ -2,7 +2,6 @@ import React from 'react'
 import Header from '../components/Header'
 import Blog from '../components/Blog'
 import Ais from '../components/Ais'
-import Navbar from '../components/Navbar'
 
 function Home() {
 

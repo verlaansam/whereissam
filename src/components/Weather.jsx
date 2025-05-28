@@ -67,10 +67,10 @@ function Weather() {
           </div>
           <table className="w-full table-auto border-collapse border border-gray-600 text-sm">
             <tbody>
-              <tr><td className="border border-gray-600 px-2 py-1">{t("Temprature")}</td><td className="border border-gray-600 px-2 py-1">{weer.temp} °C</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("Temperature")}</td><td className="border border-gray-600 px-2 py-1">{weer.temp} °C</td></tr>
               <tr><td className="border border-gray-600 px-2 py-1">{t("Wind")}</td><td className="border border-gray-600 px-2 py-1">{weer.windr} @ {windKmh} km/u ({windKnopen} kn)</td></tr>
               <tr><td className="border border-gray-600 px-2 py-1">{t("AirPressure")}</td><td className="border border-gray-600 px-2 py-1">{weer.luchtd} hPa</td></tr>
-              <tr><td className="border border-gray-600 px-2 py-1">{t("Visablility")}</td><td className="border border-gray-600 px-2 py-1">{weer.zicht} km</td></tr>
+              <tr><td className="border border-gray-600 px-2 py-1">{t("Visibility")}</td><td className="border border-gray-600 px-2 py-1">{weer.zicht} km</td></tr>
               <tr><td className="border border-gray-600 px-2 py-1">{t("Forecast")}</td><td className="border border-gray-600 px-2 py-1">{weer.verw}</td></tr>
               <tr><td className="border border-gray-600 px-2 py-1">{t("Warning")}</td><td className="border border-gray-600 px-2 py-1">{weer.waarsch}</td></tr>
             </tbody>
